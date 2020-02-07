@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="t1_2_3_4">
+    <input type="text" v-model="text">
+    <span v-if="!text.length">Можно печатать.</span>
+    <span v-else-if="text.length<10">Мало текста.</span>
+    <span v-else>Много текста</span>
+    <ul>
+      <li v-for="el in arr">{{el}}</li>
+    </ul>
+    <ul>
+      <li v-for="(el,key) in obj">{{key}} : {{el}}</li>
+    </ul>
+    <label for="">Введите числo:</label>
+    <input type="text" v-model="number">
+    <span>10 + {{number}} = {{result}}</span>
+    <div v-if='visible'>Вы вводите не число!</div>
+  </div>
+  <div id="t5_obj2">
+    <label for="">Введите имя</label>
+    <input type="text" v-model="u_name">
+    <label for="">Введите возраст</label>
+    <input type="text" v-model="u_age">
+    <button @click="push()">Ввести</button>
+  </div>
+  <div id="t5_obj1">
+    <ul v-if="visible">
+      <li v-for="obj in user">{{obj}}</li>
+    </ul>
+  </div>
+  <div id="html">
+    <div ref='html'>{{a}}</div>
+    <button @click='html'>Изменить текст</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+  new Vue({
+    el:"#t1_2_3_4",
+    data:{
+      text:'',
+      key:'',
+      number:'',
+      arr:[1,2,3,4,5],
+      visible:false,
+      obj:{
+        name:'Igor',
+        surname:'Petrov',
+        age:20
+      } 
+    },
+    computed:{
+      result(){
+        if(+this.number){
+
+        return 10+(+this.number);
+        }
+
+        return 10;
+      }
+    },
+    watch:{
+      number(){
+        this.visible=false;
+        if(!+this.number){
+          this.visible=true;
+        }
+      }
+    },
+       
+    beforeCreate(){
+      console.log('Перед созданием.');
+    },
+    created(){
+      console.log("Уже создано но не отображается");
+    },
+    beforeMount(){
+      console.log("Перед отрисовкой в DOM.");
+    },
+    mounted(){
+      console.log("Уже отображается.");
+    },
+    beforeUpdate(){
+      console.log("Перед обновлением.")
+    },
+    updated(){
+      console.log("Обновлено.");
+    },
+    beforeDestroy(){
+      console.log("Перед уничтожением обьекта.");
+    },
+    destroyed(){
+      console.log("Обьект уничтожен.");
+    }
+  })
+  obj1=new Vue({
+     el:'#t5_obj1',
+     data:{
+      user:{
+        name:'',
+        age:null,
+      },
+      visible:false
+     },
+  })
+  obj2=new Vue({
+    el:'#t5_obj2',
+    data:{
+      name:'Object 2',
+      u_name:'',
+      u_age:null
+    },
+    methods:{
+      push(){
+        obj1.user.name=this.u_name;
+        obj1.user.age=this.u_age;
+        obj1.visible=true;
+      }
+    }
+  })
+  new Vue({
+    el:'#html',
+    data:{
+      a:'Это div.'
+    },
+    methods:{
+      html(){
+        this.$refs.html.innerText="Это Vue!";
+      }
+    },
+    template:'<div>Это template.</div>',
+  })
+  </script> 
+</body>
+</html>
